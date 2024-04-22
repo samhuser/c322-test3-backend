@@ -1,8 +1,9 @@
 package edu.iu.c322.test3.controllers;
 
-import edu.iu.habahram.primesservice.model.Customer;
-import edu.iu.habahram.primesservice.service.IAuthenticationService;
-import edu.iu.habahram.primesservice.service.TokenService;
+
+import edu.iu.c322.test3.model.Customer;
+import edu.iu.c322.test3.service.IAuthenticationService;
+import edu.iu.c322.test3.service.TokenService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
@@ -42,13 +44,15 @@ public class AuthenticationController {
 
     @PostMapping("/signin")
     public String login(@RequestBody Customer customer) {
+            System.out.println("Customer Username: " + customer.getUsername());
+            System.out.println("Customer Password: " + customer.getPassword());
             Authentication authentication = authenticationManager
                     .authenticate(
                             new UsernamePasswordAuthenticationToken(
                                     customer.getUsername()
                                     , customer.getPassword()));
-
-                return authentication.createToken();
+                System.out.println("Token made: " + tokenService.generateToken(authentication));
+                return tokenService.generateToken(authentication);
     }
 
 

@@ -45,15 +45,14 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors(Customizer.withDefaults())
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+        return http.cors(Customizer.withDefaults())
                 .csrf(x -> x.disable())
-                .authorizeHttpRequests( auth -> auth
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                HttpMethod.POST,"/register", "/signin").permitAll()
+                                HttpMethod.POST,"/signup","/signin").permitAll()
                         .requestMatchers(
-                                HttpMethod.GET,"/").permitAll()
+                                HttpMethod.GET,"/", "/questions/{id}/image").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
